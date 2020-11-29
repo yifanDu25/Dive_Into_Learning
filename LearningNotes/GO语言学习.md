@@ -832,3 +832,133 @@ three: 3
 函数返回值： 0
 */
 ```
+这里涉及闭包的概念，闭包是由函数及相关的引用环境组合而成的实体(即：闭包=函数+引用环境)。
+
+- 在函数式语言中，当内嵌函数体内引用到体外的变量时，将会把定义时涉及到的引用环境和函数体打包成一个整体（闭包）返回。现在给出引用环境的定义就容易理解了：引用环境是指在程序执行中的某个点所有处于活跃状态的约束（一个变量的名字和其所代表的对象之间的联系）所组成的集合。闭包的使用和正常的函数调用没有区别。
+- 由于闭包把函数和运行时的引用环境打包成为一个新的整体，所以就解决了函数编程中的嵌套所引发的问题。当每次调用包含闭包的函数时都将返回一个新的闭包实例，这些实例之间是隔离的，分别包含调用时不同的引用环境现场。不同于函数，闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。
+
+闭包的价值:闭包的价值在于可以作为函数对象或者匿名函数，对于类型系统而言，这意味着不仅要表示数据还要表示代码。支持闭包的多数语言都将函数作为第一级对象，就是说这些函数可以存储到变量中作为参数传递给其他函数，最重要的是能够被函数动态创建和返回。
+
+
+利用闭包实现斐波那契数列
+```
+package main
+
+import (
+	"fmt"
+)
+
+func fibonacci() func() int {
+	b0 := 0
+	b1 := 1
+	return func() int {
+		tmp := b0 + b1
+		b0 = b1
+		b1 = tmp
+		return b1
+	}
+
+}
+
+func main() {
+	myFibonacci := fibonacci()
+	for i := 1; i <= 5; i++ {
+		fmt.Println(myFibonacci())
+	}
+}
+```
+###GO面向对象
+面向对象的三个基本特性:
+1. 封装
+2. 继承
+3. 多态
+
+
+golang中没有class关键字，却引入了type，二者不是简单的替换那么简单，type表达的涵义远比class要广。
+
+
+类声明：
+```
+type Poem struct {
+  Title string
+  Author string
+  intro string
+}
+```
+这样就声明了一个类，其中没有public、protected、private的声明。golang用另外一种做法来实现属性的访问权限：属性的开头字母是大写的则在其他包种可以被访问，否则只能在本包中访问。类的声明和方法也是如此。
+
+注意:struct中是没有方法（行为）的，少了这个不是等于封装特征缺了只脚吗？当然不是了，Go语言里对应面向对象里的成员方法不是定义在struct里面，而是直接定义在struct外面，和struct平级，这里定义一个类似Java中的toString方法：
+
+```
+type Employee struct {
+    Name string
+    Sex  string
+    Age  int
+}
+
+func (e *Employee) ToString() string {
+    return "name=" + e.Name + ";sex=" + e.Sex + ";age=" + strconv.Itoa(e.Age)
+}
+```
+这里(e *Employee)叫做方法的接收者，有点怪异，我们可以这样理解：
+1. Go里没有this，要自己加个类似this的东西，用于指代方法对应的实例，括号里前面的e相当于this，当然名字可以随便取。
+2. 方法定义和struct平级，如果不加个接收者定义，哪里知道这个方法属于谁的呢，括号里后面的类型表示这个方法属性于谁的，这里可以用（e Employee）或（e *Employee），区别是传值还是传指针，一般统一用后者。
+
+
+####继承
+同样，Go里面也没有像Java中类似extend继承的语法，Go是用了类似Java里组合的东西来让语法看起来像继承：
+
+```
+type TechEmployee struct {
+    Employee
+    SalaryPerMonth float32
+}
+
+type SaleEmployee struct {
+    Employee
+    BaseSalary float32
+    ExtraRate  float32
+}
+
+//实例化时，是传了个employee
+tech := object.TechEmployee{
+    Employee:       object.Employee{Name: "lee"},
+    SalaryPerMonth: 10000,
+}
+//这里看起来像拥有了Employee的name属性，可以设置和访问
+tech.Name = "bruce lee"
+fmt.Println(tech.Name)
+```
+
+####多态
+关于多态，必须要提接口，终于Go里也是有接口的了：
+```
+type TechEmployee struct {
+    Employee
+    SalaryPerMonth float32
+}
+
+func (e *TechEmployee) CalcSalary() float32 {
+    return e.SalaryPerMonth
+}
+
+type Machine struct {
+
+}
+
+func (e *Machine) CalcSalary() float32 {
+    return 0
+}
+```
+相比于Java而言，GO语言的接口并没有那么直观，但更灵活。它没有指定实现哪个接口，而是如果定义了一个相同名字和返回值的方法，就认为是实现了对应拥有这个方法的接口，这里假如接口有两个方法，对应也必须要两个方法都有定义了，才认为是实现了接口。
+
+####构造函数(自己构造)
+```
+func NewPoem(author string) (poem *Poem) {
+  poem = &Poem{}
+  poem.Author = author
+  return
+}
+
+poem6 := NewPoem("Heine")
+```

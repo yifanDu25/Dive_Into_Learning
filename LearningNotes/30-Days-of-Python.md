@@ -464,3 +464,229 @@ class AddableBingoCage(BingoCage):  # 扩展 BingoCage
 3. 函数的第一行语句可以选择性地使用文档字符串—-用于存放函数说明。
 4. 函数内容以冒号起始，并且函数体要有缩进。
 5. return[expression]结束函数，选择性地返回一个值给调用者。不带表达式的return相当于返回None。
+
+###内置函数
+![](assets/markdown-img-paste-2020112623081606.png)
+
+1. abs(x)：返回一个数的绝对值。 参数可以是一个整数或浮点数。 如果参数是一个复数，则返回它的模。 如果 x 定义了 __abs__()，则 abs(x) 将返回 x.__abs__()。
+2. all(iterable)：如果 iterable 的所有元素均为真值（或可迭代对象为空）则返回 True 。 等价于:
+```
+def all(iterable):
+    for element in iterable:
+        if not element:
+            return False
+    return True
+```
+3. any(iterable):如果 iterable 的任一元素为真值则返回 True。 如果可迭代对象为空，返回 False。 等价于:
+```
+def any(iterable):
+    for element in iterable:
+        if element:
+            return True
+    return False
+```
+4. ascii(object):就像函数 repr()，返回一个对象可打印的字符串，但是 repr() 返回的字符串中非 ASCII 编码的字符，会使用 \x、\u 和 \U 来转义。生成的字符串和 Python 2 的 repr() 返回的结果相似。
+5. bin(x):将一个整数转变为一个前缀为“0b”的二进制字符串。结果是一个合法的 Python 表达式。如果 x 不是 Python 的 int 对象，那它需要定义 __index__() 方法返回一个整数。一些例子：
+```
+>>>bin(3)
+'0b11'
+>>>bin(-10)
+'-0b1010'
+```
+如果不一定需要前缀“0b”，还可以使用如下的方法。
+```
+>>>format(14, '#b'), format(14, 'b')
+('0b1110', '1110')
+>>>f'{14:#b}', f'{14:b}'
+('0b1110', '1110')
+```
+6. class bool([x]):返回一个布尔值，True 或者 False。 x 使用标准的 真值测试过程 来转换。如果 x 是假的或者被省略，返回 False；其他情况返回 True。bool 类是 int 的子类（参见 数字类型 --- int, float, complex）。其他类不能继承自它。它只有 False 和 True 两个实例（参见 布尔值）。
+7. breakpoint(*args, **kws):此函数会在调用时将你陷入调试器中。具体来说，它调用 sys.breakpointhook() ，直接传递 args 和 kws 。默认情况下， sys.breakpointhook() 调用 pdb.set_trace() 且没有参数。在这种情况下，它纯粹是一个便利函数，因此您不必显式导入 pdb 且键入尽可能少的代码即可进入调试器。但是， sys.breakpointhook() 可以设置为其他一些函数并被 breakpoint() 自动调用，以允许进入你想用的调试器。
+8. class bytearray([source[, encoding[, errors]]]):返回一个新的 bytes 数组。 bytearray 类是一个可变序列，包含范围为 0 <= x < 256 的整数。它有可变序列大部分常见的方法，见 可变序列类型 的描述；同时有 bytes 类型的大部分方法，参见 bytes 和 bytearray 操作。
+9. class bytes([source[, encoding[, errors]]]):返回一个新的“bytes”对象， 是一个不可变序列，包含范围为 0 <= x < 256 的整数。bytes 是 bytearray 的不可变版本 - 它有其中不改变序列的方法和相同的索引、切片操作。
+10. callable(object):如果参数 object 是可调用的就返回 True，否则返回 False。 如果返回 True，调用仍可能失败，但如果返回 False，则调用 object 将肯定不会成功。 请注意类是可调用的（调用类将返回一个新的实例）；如果实例所属的类有 __call__() 则它就是可调用的。
+11. chr(i):返回 Unicode 码位为整数 i 的字符的字符串格式。例如，chr(97) 返回字符串 'a'，chr(8364) 返回字符串 '€'。这是 ord() 的逆函数。
+12. @classmethod:把一个方法封装成类方法。一个类方法把类自己作为第一个实参，就像一个实例方法把实例自己作为第一个实参。请用以下习惯来声明类方法:
+```
+class C:
+    @classmethod
+    def f(cls, arg1, arg2, ...): ...
+```
+- 类方法的调用可以在类上进行 (例如 C.f()) 也可以在实例上进行 (例如 C().f())。 其所属类以外的类实例会被忽略。 如果类方法在其所属类的派生类上调用，则该派生类对象会被作为隐含的第一个参数被传入。
+13. compile(source, filename, mode, flags=0, dont_inherit=False, optimize=-1):将 source 编译成代码或 AST 对象。代码对象可以被 exec() 或 eval() 执行。source 可以是常规的字符串、字节字符串，或者 AST 对象。参见 ast 模块的文档了解如何使用 AST 对象。
+14. class complex([real[, imag]]):返回值为 real + imag*1j 的复数，或将字符串或数字转换为复数。如果第一个形参是字符串，则它被解释为一个复数，并且函数调用时必须没有第二个形参。第二个形参不能是字符串。每个实参都可以是任意的数值类型（包括复数）。如果省略了 imag，则默认值为零，构造函数会像 int 和 float 一样进行数值转换。如果两个实参都省略，则返回 0j。
+15. delattr(object, name):setattr() 相关的函数。实参是一个对象和一个字符串。该字符串必须是对象的某个属性。如果对象允许，该函数将删除指定的属性。例如 delattr(x, 'foobar') 等价于 del x.foobar 。
+
+###lambda匿名函数
+匿名函数就是没有定义函数的名称，用来实现简单的功能。
+
+语法结构:
+```
+lambda param_list: expression
+```
+- param_list是参数列表，相当于函数的参数
+- expression是表达式,相当于函数体，用一行进行表示
+
+
+###map函数
+map会根据提供的函数对指定序列做映射。
+语法结构：map(function,iterable,..)
+```
+>>> func2=lambda x: x**x
+>>> L=[1,2,3]
+>>> map(func2, L)
+<map object at 0x00000218C07F0080>
+>>> list(map(func2, L)) # 注意要显示内容需要转为list类型，因为py3中返回的是迭代器对象
+[1, 4, 27]
+>>>
+```
+其中function可以使用lambda函数对象
+
+###reduce函数
+reduce 函数会对参数序列中元素进行累积。
+
+语法结构:reduce(function, iterable[, initializer])
+```
+>>> reduce(lambda x, y: x+y, [1,2,3,4,5])  # 使用 lambda 匿名函数
+15
+```
+注意python3使用前要加上：from functools import reduce , reduce函数在python3中被移除，放入了functools模块。
+
+###filter函数
+filter内置函数用于过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。
+语法结构: filter(function, iterable)
+```
+>>> filter(lambda x: x % 2 == 0, [1,2,3,4,5,6,7,8,9,10])
+<filter object at 0x00000218C07F0080>
+>>> list(filter(lambda x: x % 2 == 0, [1,2,3,4,5,6,7,8,9,10]))
+[2, 4, 6, 8, 10]
+>>>
+```
+这里function智能返回true or false, 将满足true的放入最终列表。
+
+###sorted函数
+sorted函数对所有可迭代的对象进行排序操作。
+语法结构:sorted(iterable, key=None, reverse=False)
+
+```
+>>> sorted([[3,4],[2,1],[5,3],[7,4],[9,0]], key=lambda x:x[0])
+[[2, 1], [3, 4], [5, 3], [7, 4], [9, 0]]
+```
+
+key参数的作用是我们自定义一个函数，然后通过将序列中的元素作用于函数之后再进行排序
+
+![](assets/markdown-img-paste-20201126235558337.png)
+
+
+
+###闭包
+闭包概念：在一个内部函数中，对外部作用域的变量进行引用，(并且一般外部函数的返回值为内部函数)，那么内部函数就被认为是闭包。
+举个例子:
+![](assets/markdown-img-paste-20201127000116353.png)
+在函数startAt中定义了一个incrementBy函数，incrementBy访问了外部函数startAt的变量，并且函数返回值为incrementBy函数（注意python是可以返回一个函数的，这也是python的特性之一）
+![](assets/markdown-img-paste-20201127000201217.png)
+
+上面代码中a其实就是一个函数，上面代码执行的结果：
+![](assets/markdown-img-paste-2020112700024220.png)
+从结果我们不难看出，a是函数incrementBy而不是startAt这个有点绕，但是并不难理解，因为return回来的是incrementBy函数。
+![](assets/markdown-img-paste-20201127000303800.png)
+输出是：
+![](assets/markdown-img-paste-20201127000315184.png)
+如果调用函数a的话，得到的结果是传入参数的整数值加。
+
+
+常见错误:
+1. 闭包无法修改外部函数的局部变量。
+2. python循环中不包含域的概念。
+
+闭包的作用:闭包可以保存当前的运行环境，以一个类似棋盘游戏的例子来说明。假设棋盘大小为50*50，左上角为坐标系原点(0,0)，我需要一个函数，接收2个参数，分别为方向(direction)，步长(step)，该函数控制棋子的运动。 这里需要说明的是，每次运动的起点都是上次运动结束的终点。
+
+###装饰器
+装饰器本质是一个python函数，如果学过flask就知道，里边装饰器是必须的，经常用到。
+
+装饰器的作用：抽离大量和函数功能本身无关的代码进行重用
+
+一个简单的装饰器，用于计数，由于对不同的函数运行时间进行计数的需要，所以要对时间计数这部分进行处理。
+```
+def get_time(func):
+	def wrapper():
+        startTime = time.time()
+        func()
+        endTime = time.time()
+        print("spend %f" % (endTime-startTime))
+    return wrapper
+myFunction = get_time(myFunction)
+```
+精简一下，使用@语法来进行精简：
+```
+import time
+def get_time(func):
+    startTime = time.time()
+    func()
+    endTime = time.time()
+    processTime = (endTime - startTime) * 1000
+    print ("The function timing is %f ms" %processTime)
+
+@get_time
+def myfunc():
+	print("start")
+	time.sleep(0.8)
+	print("end")
+
+if __name__ == "__main__":
+    myfunc
+```
+理解为：get_time(myfun()) ,将myfunc()函数包裹
+
+装饰器可以叠加使用，若多个装饰器同时装饰一个函数，那么装饰器的调用顺序和@语法糖的声明顺序相反，也就是：
+
+```
+@decorator1
+@decorator2
+def func():
+    pass
+```
+等效于
+```
+func = decorator1(decorator2(func()))
+```
+####内置装饰器
+Python中，常见的类装饰器包括：@staticmathod、@classmethod和@property
+
+1. @staticmethod：类的静态方法，跟成员方法的区别是没有self参数，并且可以在类不进行实例化的情况下调用。
+2. @classmethod：跟成员方法的区别是接收的第一个参数不是self，而是cls（当前类的具体类型）
+3. @property：表示可以直接通过类实例直接访问的信息。
+
+####带有参数的装饰器
+```
+def func(*args,**kwags):
+	def function(func): #定义了一个闭包
+		def func_in(*args,**kwargs): #闭包内的函数，因为装饰器运行的实则是闭包内的函数，所以这里将需要有形参用来接收原函数的参数。
+			print('这里是需要装饰的内容，就是需要添加的内容')
+			num = func(*args,**kwargs) #调用实参函数，并传入一致的实参，并且用变量来接收原函数的返回值，
+			return num #将接受到的返回值再次返回到新的test()函数中。
+		return func_in
+	return function
+
+@func(50)  #这里会先运行函数func，并切传入参数，之后会再次运行闭包函数进行装饰, @func(50)>>@function，然后将由@function继续进行装饰修改。
+def test(a,b):
+	print('这是一个函数')
+	return a+b
+```
+```
+class Test(object): #定义一个类
+	def __init__(self，func):
+		self.__func = func
+	def __call__(self):  #定义call方法，当直接调用类的时候，运行这里。
+		print('这里是装饰的功能')
+		self.__func()
+t = Test() #实例化对象
+t() #调用类，将会调用call方法。
+
+@Test  #类装饰器等于test = Test(test),将函数test当作参数传入类中的init方法，并将函数名赋值给私有属性__func，当函数test被调用的时候，其实是运行Test类中的call方法.
+def test():
+	print('被装饰的函数')
+test() #这里调用的不在是函数test，而是实例对象test的call方法，会先进行装饰，然后再调用私有属性__func(),__func 其实就是被装饰的函数test。
+```
+##参考文献
+1. https://blog.csdn.net/qq_41853758/article/details/82853811
